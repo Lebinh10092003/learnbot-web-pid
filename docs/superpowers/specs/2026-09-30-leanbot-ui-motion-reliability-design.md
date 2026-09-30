@@ -154,6 +154,11 @@ Initial centralized constants are deterministic and provisional until Gate C:
 
 - Continue measuring signed body rotation with `LbMotion.getRotationDeg()`; the
   documented Leanbot convention is positive for Right and negative for Left.
+- The coarse pass starts at `min(targetSpeed, 200)` and applies the same 40
+  steps/s-per-10-ms acceleration increment as Move until either the requested
+  target speed or its angle-braking envelope is reached. The envelope linearly
+  approaches 200 steps/s across the final `max(coarseLead, 5)` degrees, with the
+  same 80 steps/s-per-tick deceleration limit.
 - The first pass uses the normal target speed but intentionally stops at
   `max(0, targetAngle - coarseLead)`, where `coarseLead` is the table value. It then
   calls `stopAndWait()` before measuring the settled angle. This directly addresses
@@ -172,6 +177,11 @@ Initial centralized constants are deterministic and provisional until Gate C:
   table remains `1000:-3`, `1100:-2`, `0100/1110:-1`, `0110/1111:0`,
   `0010/0111:+1`, `0011:+2`, and `0001:+3`. This avoids introducing an unverified
   analog-channel order or calibration dependency.
+- Analog centroid assistance is intentionally out of scope: it was not part of the
+  requested block contract, and this imported Leanbot build does not pin a tested
+  sensor-index, polarity, or calibration contract for `LbIRArray`. It may be added
+  later only with a library-version-specific hardware test, without changing these
+  blocks.
 - Integral candidate is clamped to `[-30,30]`. Raw derivative is
   `error - previousError`; filtered derivative uses the table equation. Correction
   is `220*error + 2*integral + 60*filteredDerivative`.
@@ -182,9 +192,11 @@ Initial centralized constants are deterministic and provisional until Gate C:
   deliberate sharp-recovery case and sets the inner wheel to zero.
 - Do not integrate while the inner output is saturated and the new integral would
   increase saturation. This is the anti-windup rule.
-- Base speed uses the same 40-up/80-down slew. Distance and time variants apply the
-  Move braking equation to their remaining target. Marker variants require three
-  consecutive matching samples before stopping.
+- Base speed uses the same 40-up/80-down slew. The distance variant applies the
+  Move braking equation to remaining millimetres. The time variant uses
+  `brakeMs = clamp(targetSpeed / 2, 200, 800)` and linearly approaches 200 steps/s
+  over the final `brakeMs`, again bounded by the 80-per-tick deceleration limit.
+  Marker variants require three consecutive matching samples before stopping.
 - Calibration remains the responsibility of the existing Leanbot calibration API;
   this change does not insert an interactive calibration sequence into every My
   Block call.
@@ -231,11 +243,13 @@ Compile/Upload click
 - A generator harness executes the actual Blockly generator and captures the exact
   C++ string stored in `definitions_['myblocks_runtime']`; assertions target that
   emitted source rather than a separately hand-written C++ copy.
-- Deterministic controller-model tests use the same constants table and cover input
+- A host C++ harness compiles and executes the exact captured runtime string with
+  mocked `millis`, odometry, line state, and `LbMotion` calls. It covers input
   rejection, linear speed mapping, the 200 ms Speed-50 ramp, command bounds,
   forward/reverse heading correction, coarse/fine turn braking with simulated
   coast, derivative filtering, anti-windup, marker debounce, lost-line timeout, and
-  stall timeout. A parity test asserts every model constant occurs in emitted C++.
+  stall timeout. No separately reimplemented controller model is accepted as a
+  substitute. The Arduino compile remains a second compatibility check.
 - Generated representative sketches compile without the current
   `-Wmaybe-uninitialized` warnings.
 - Browser tests verify Compile success closes PROGRAM, Compile failure keeps it
