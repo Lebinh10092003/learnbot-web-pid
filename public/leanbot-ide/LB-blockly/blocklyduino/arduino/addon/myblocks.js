@@ -346,31 +346,52 @@ void lbmbTurn(float speedPercent, float angleDeg, bool isLeft) {
   int32_t coarseMargin = lbmbClamp16(targetSpeed / 100, 5, 20);
   
   int32_t startRot = LbMotion.getRotationDeg();
-  // Assume Left turn increases rotation (r - l > 0), Right turn decreases rotation
-  int32_t targetRot = startRot + (isLeft ? (int32_t)angleDeg : -(int32_t)angleDeg);
+  int32_t passAngle = (int32_t)angleDeg - coarseMargin;
   
-  for (int pass = 0; pass < 3; pass++) {
+  if (passAngle > 0) {
+    LbmbMotionCtx ctx = {};
+    while (true) {
+      LbmbState state = { (uint32_t)millis(), (int32_t)LbMotion.getDistanceMm(), (int32_t)LbMotion.getRotationDeg(), LbIRLine.read() };
+      if (!ctx.initialized) lbmbMotionCoreInit(&ctx, &state);
+      LbmbCommand cmd = lbmbTurnCoreStep(&ctx, &state, speedPercent, (float)passAngle, isLeft);
+      if (cmd.isDone) {
+        LbMotion.stopAndWait();
+        break;
+      }
+      LbMotion.runLR(cmd.leftSpeed, cmd.rightSpeed);
+      delay(10);
+    }
+  }
+  
+  int32_t settledRot = LbMotion.getRotationDeg();
+  bool leftIsPos = true; // default assumption
+  if (settledRot != startRot) {
+    if (isLeft) leftIsPos = (settledRot > startRot);
+    else leftIsPos = (settledRot < startRot);
+  }
+  
+  int32_t targetRot = startRot + (isLeft ? (leftIsPos ? (int32_t)angleDeg : -(int32_t)angleDeg) : (leftIsPos ? -(int32_t)angleDeg : (int32_t)angleDeg));
+  
+  for (int pass = 1; pass < 3; pass++) {
     int32_t currentRot = LbMotion.getRotationDeg();
     int32_t error = targetRot - currentRot;
     
     int32_t absError = lbmbAbs32(error);
-    int32_t passAngle = absError;
-    if (pass == 0) passAngle -= coarseMargin;
-    else passAngle -= 1; // Stop one degree early for fine pass
+    int32_t fineAngle = absError - 1; // Stop one degree early for fine pass
     
-    if (passAngle <= 0) break; // Within tolerance
+    if (fineAngle <= 0) break; // Within tolerance
     
-    bool nowLeft = (error > 0);
-    float passSpeed = (pass == 0) ? speedPercent : (float)lbmbMin16(targetSpeed, 250) / 20.0f;
+    bool nowLeft = ((error > 0) == leftIsPos);
+    float passSpeed = (float)lbmbMin16(targetSpeed, 250) / 20.0f;
     LbmbMotionCtx ctx = {};
     
     while (true) {
       LbmbState state = { (uint32_t)millis(), (int32_t)LbMotion.getDistanceMm(), (int32_t)LbMotion.getRotationDeg(), LbIRLine.read() };
       if (!ctx.initialized) lbmbMotionCoreInit(&ctx, &state);
-      LbmbCommand cmd = lbmbTurnCoreStep(&ctx, &state, passSpeed, (float)passAngle, nowLeft);
+      LbmbCommand cmd = lbmbTurnCoreStep(&ctx, &state, passSpeed, (float)fineAngle, nowLeft);
       if (cmd.isDone) {
         LbMotion.stopAndWait();
-        break; // break the inner while, go to next pass
+        break; 
       }
       LbMotion.runLR(cmd.leftSpeed, cmd.rightSpeed);
       delay(10);
