@@ -1,0 +1,156 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <block type="Leanbot.whenStarted" id="j6T+-bX4ek*WN[:xS]o|" x="188" y="63">
+    <next>
+      <block type="Leanbot.commentLine" id="2cEK43QabmNd~dtg${z.">
+        <field name="commentString">Touch both TB1A and TB1B at the same time to start mission</field>
+        <next>
+          <block type="LbMission.beginByTeacher_end" id="SgBM?ChuD;h;ZK=*w7oz">
+            <field name="comboTouch">TB1A + TB1B</field>
+            <statement name="Body">
+              <block type="controls_if" id="jE,T3Q{~R`|x1@3?S.NZ">
+                <value name="IF0">
+                  <block type="Leanbot.objectInFront" id="y,T?B{JJyK*h~|Vnwj`t">
+                    <field name="UnitPing">cm</field>
+                    <value name="Distance">
+                      <shadow type="math_number" id="ahv{G=qvfok?u4e*Gefq">
+                        <field name="NUM">10</field>
+                      </shadow>
+                    </value>
+                  </block>
+                </value>
+                <statement name="DO0">
+                  <block type="Leanbot.section" id="KJB(j~jF=$FWcBH`dRG/">
+                    <field name="commentString">In case of obstruction, turn to other direction before going straight</field>
+                    <statement name="Body">
+                      <block type="LbMotion.run" id="3ce:bNQMuB+a_fch=SQT">
+                        <field name="MotionType">Run</field>
+                        <field name="UnitSpeed">rpm</field>
+                        <value name="Left">
+                          <shadow type="math_number" id="`-DPD=j!E.QX.dha_6qx">
+                            <field name="NUM">30</field>
+                          </shadow>
+                        </value>
+                        <value name="Right">
+                          <shadow type="math_number" id="2Z:(#M6Ak=Og,KD$)9$a">
+                            <field name="NUM">-30</field>
+                          </shadow>
+                        </value>
+                        <next>
+                          <block type="LbMotion.waitRotationDeg" id="K7LW/%@NIbZq8M:7Ca6r">
+                            <field name="UnitDegree">degrees</field>
+                            <value name="rotationDeg">
+                              <shadow type="math_number" id="zR5XEb0Iqe/v8nyDVD%O">
+                                <field name="NUM">60</field>
+                              </shadow>
+                            </value>
+                            <next>
+                              <block type="LbMotion.stop" id="/^oV2#0_lKm9mjyG$4!P"></block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </statement>
+                    <next>
+                      <block type="Leanbot.commentLine" id="Ha[JIn$21DuSw5YA$NA8">
+                        <field name="commentString">Play Beep tone</field>
+                        <next>
+                          <block type="Leanbot.toneDuration" id="WQUyGHmv7HTQ?QX[|Irj">
+                            <field name="UnitFreq">Hz</field>
+                            <field name="UnitDuration">milliseconds</field>
+                            <value name="Freq">
+                              <shadow type="math_number" id="@?{)@+v#BCGre6C%J={t">
+                                <field name="NUM">1500</field>
+                              </shadow>
+                            </value>
+                            <value name="Duration">
+                              <shadow type="math_number" id="n8j5)+m}:2J_+^Sk5-~I">
+                                <field name="NUM">100</field>
+                              </shadow>
+                            </value>
+                          </block>
+                        </next>
+                      </block>
+                    </next>
+                  </block>
+                </statement>
+                <next>
+                  <block type="Leanbot.section" id=";Zu}mK`9[p~Z.XG(Br{h">
+                    <field name="commentString">Go straight 15 cm</field>
+                    <statement name="Body">
+                      <block type="LbMotion.run" id="^(u9.)9wdMfrR]bF}W4D">
+                        <field name="MotionType">Run</field>
+                        <field name="UnitSpeed">rpm</field>
+                        <value name="Left">
+                          <shadow type="math_number" id="=2Lx}+vfsy09[u8@rR0z">
+                            <field name="NUM">30</field>
+                          </shadow>
+                        </value>
+                        <value name="Right">
+                          <shadow type="math_number" id="cG9L5=V.{qm[iEPu;*2|">
+                            <field name="NUM">30</field>
+                          </shadow>
+                        </value>
+                        <next>
+                          <block type="LbMotion.waitDistanceMm" id="bLNJz)IXm0D}XV2:O_l8">
+                            <field name="UnitDistance">cm</field>
+                            <value name="distanceMm">
+                              <shadow type="math_number" id="@@iY::gnM)/*EUrc`X:(">
+                                <field name="NUM">15</field>
+                              </shadow>
+                            </value>
+                            <next>
+                              <block type="LbMotion.stop" id="*EIeD2I$:.z^^@+80v33"></block>
+                            </next>
+                          </block>
+                        </next>
+                      </block>
+                    </statement>
+                    <next>
+                      <block type="Leanbot.section" id="nM4ezM@*2Pq-gm2H.oLw">
+                        <field name="commentString">Display some color</field>
+                        <statement name="Body">
+                          <block type="LbRGB.clear_show" id="E)rX[U??jXVNN/y_+^GW">
+                            <statement name="Body">
+                              <block type="LbRGB.fillColor" id="qPSq?VxK~2/x~7,vSJi?">
+                                <value name="bitmask">
+                                  <shadow type="LbRGB.shape" id="!?l:)-V|MRs;bp5@m|/9">
+                                    <field name="ledO">FALSE</field>
+                                    <field name="ledA">TRUE</field>
+                                    <field name="ledB">TRUE</field>
+                                    <field name="ledC">TRUE</field>
+                                    <field name="ledD">TRUE</field>
+                                    <field name="ledE">FALSE</field>
+                                    <field name="ledF">FALSE</field>
+                                  </shadow>
+                                </value>
+                                <value name="RGBColor">
+                                  <shadow type="LbRGB.colour_picker" id="R+anqiJ5`PQqS0/Vjj;f">
+                                    <field name="Color">#33ffff</field>
+                                  </shadow>
+                                </value>
+                                <next>
+                                  <block type="LbRGB.setColor" id="Ql?Gse9Kyri3==;.7:nn">
+                                    <field name="ledX">ledO</field>
+                                    <value name="RGBColor">
+                                      <shadow type="LbRGB.colour_picker" id="wop6,Dq[|9]UO9-bInOL">
+                                        <field name="Color">#ff9900</field>
+                                      </shadow>
+                                    </value>
+                                  </block>
+                                </next>
+                              </block>
+                            </statement>
+                          </block>
+                        </statement>
+                      </block>
+                    </next>
+                  </block>
+                </next>
+              </block>
+            </statement>
+          </block>
+        </next>
+      </block>
+    </next>
+  </block>
+</xml>

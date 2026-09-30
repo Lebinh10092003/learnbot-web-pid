@@ -1,0 +1,48 @@
+LeanbotCompiler:
+  PredictedTotalMs: 10000 
+  CompilePayload:            # Tempate for compile payload
+    fqbn: "arduino:avr:uno"
+    flags:
+      verbose: false
+      preferLocal: false
+    libs: []
+  ProgressEmitIntervalMs: 500
+  LS_KEY_LAST_PREV_HASH: 'IDE_LastPrevHash'
+  LS_KEY_LAST_PREV_RESPONSE: 'IDE_LastPrevResponse'
+
+LeanbotBLE:
+  SERVICE_UUID:       '0000ffe0-0000-1000-8000-00805f9b34fb'
+  LS_KEY_LAST_DEVICE: "IDE_CurrentLeanbotID"                 # LocalStorage key for last connected device info (example: id of last conected leanbot)
+  reconnectInterval:  100                                    # delay between 2 reconnecting try (in ms)
+
+  Serial:
+    SerialPipe_UUID:  '0000ffe1-0000-1000-8000-00805f9b34fb'
+
+  EspUploader:
+    DataPipe_UUID:    '0000ffe2-0000-1000-8000-00805f9b34fb'
+    ControlPipe_UUID: '0000ffe3-0000-1000-8000-00805f9b34fb'
+    MaxPacketBufferSize: 4                                    # Max packet buffer size for ESP uploader (in packet)
+    timeoutDurationMs: 200                                    # Timeout duration for ESP uploader (in ms)
+
+  JDYUploader:
+    pageSizeByte: 128                                         # Page size in byte of a NANO MCU (needed for JDY uploader internal logic)
+    getSyncIntervalMs: 500                                    # When compile, get sync data each 500ms to keep NANO in bootloader mode
+    syncIntervalMs : 250                                      # (experimental for upload2) When compile, after send get sync, wait 250ms to check if receive sync ack
+    loadAddressTimeoutMs: 1500
+    writeFlashTimeoutMs: 750
+    readFlashTimeoutMs: 750
+    readPageTimeoutMs: 750
+
+LeanbotSerial:
+  LS_KEY_LAST_DEVICE: "IDE_CurrentSerialDevice"
+  CURRENT_LB_NAME: "IDE_CurrentSerialLBName"
+  DEFAULT_BAUDRATE: 115200
+  DEFAULT_BUFFER_SIZE: 2048
+  Uploader:
+    pageSizeByte: 128                                         # Page size in byte of a NANO MCU (needed for JDY uploader internal logic)
+    getSyncIntervalMs: 500                                    # When compile, get sync data each 500ms to keep NANO in bootloader mode
+    syncIntervalMs : 250                                      # (experimental for upload2) When compile, after send get sync, wait 250ms to check if receive sync ack
+    loadAddressTimeoutMs: 1500
+    writeFlashTimeoutMs: 750
+    readFlashTimeoutMs: 750
+    readPageTimeoutMs: 750

@@ -1,0 +1,51 @@
+var toolbox_myblocks =
+{
+  "kind": "categoryToolbox",
+  "contents": [
+    {
+      "kind": "category",
+      "name": "My Blocks",
+      "toolboxitemid": "MYBLOCKS",
+      "level": "1",
+      "levels": "1,2,3",
+      "categorystyle": "myblocks_category",
+      "cssConfig": {
+        "icon": "customIcon fas fa-cube"
+      },
+      "contents": [
+        {
+          "kind": "block",
+          "blockxml": "<block type='MyBlocks.moveDistance'><value name='Speed'> <shadow type='math_number'> <field name='NUM'>50</field> </shadow> </value><value name='DistanceCm'> <shadow type='math_number'> <field name='NUM'>30.0</field> </shadow> </value></block>"
+        },
+        {
+          "kind": "block",
+          "blockxml": "<block type='MyBlocks.turnLeft'><value name='Speed'> <shadow type='math_number'> <field name='NUM'>50</field> </shadow> </value><value name='AngleDeg'> <shadow type='math_number'> <field name='NUM'>90</field> </shadow> </value></block>"
+        },
+        {
+          "kind": "block",
+          "blockxml": "<block type='MyBlocks.turnRight'><value name='Speed'> <shadow type='math_number'> <field name='NUM'>50</field> </shadow> </value><value name='AngleDeg'> <shadow type='math_number'> <field name='NUM'>90</field> </shadow> </value></block>"
+        },
+        {
+          "kind": "block",
+          "blockxml": "<block type='MyBlocks.fllStopLeft'><value name='Speed'> <shadow type='math_number'> <field name='NUM'>50</field> </shadow> </value></block>"
+        },
+        {
+          "kind": "block",
+          "blockxml": "<block type='MyBlocks.fllStopRight'><value name='Speed'> <shadow type='math_number'> <field name='NUM'>50</field> </shadow> </value></block>"
+        },
+        {
+          "kind": "block",
+          "blockxml": "<block type='MyBlocks.fllStopT'><value name='Speed'> <shadow type='math_number'> <field name='NUM'>50</field> </shadow> </value></block>"
+        },
+        {
+          "kind": "block",
+          "blockxml": "<block type='MyBlocks.fllDistance'><value name='Speed'> <shadow type='math_number'> <field name='NUM'>50</field> </shadow> </value><value name='DistanceCm'> <shadow type='math_number'> <field name='NUM'>50.0</field> </shadow> </value></block>"
+        },
+        {
+          "kind": "block",
+          "blockxml": "<block type='MyBlocks.fllTime'><value name='Speed'> <shadow type='math_number'> <field name='NUM'>50</field> </shadow> </value><value name='TimeSec'> <shadow type='math_number'> <field name='NUM'>5.0</field> </shadow> </value></block>"
+        }
+      ]
+    }
+  ]
+};

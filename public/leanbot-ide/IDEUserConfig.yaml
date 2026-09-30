@@ -1,0 +1,52 @@
+LeanbotCompiler:
+  Server: "cs.leanbot.space"
+  # Compiler server hostname.
+  # Available options:
+  #   - cs.leanbot.space        (production)
+  #   - cs1.leanbot.space       (alternative production)
+
+  LogLevel: INFO
+  # Controls how detailed the application logs are.
+  # Higher verbosity helps debugging but produces more output.
+  # Possible values:
+  #   DEBUG  - Developer-focused debugging information
+  #   INFO   - Normal operational messages (default in production)
+  #   WARN   - Something unexpected happened but the app can continue
+  #   ERROR  - A failure occurred in a specific operation
+
+LeanbotBLE:
+  LogLevel: INFO # DEBUG, INFO, WARN, ERROR
+  Serial:
+    LogLevel: INFO # DEBUG, INFO, WARN, ERROR
+  EspUploader:
+    # Advanced settings.
+    # Do NOT modify unless you fully understand BLE constraints.
+    BLE_MaxLength: 512   # Maximum BLE packet length (bytes). Max supported value: 512
+    BLE_Interval: null  # BLE connection interval (units: 1.25 ms). Examples: 12, 24, ...
+    LogLevel: INFO
+  JDYUploader:
+    getSyncRepeatMs : 100
+    getSyncTimeoutMs: 1500 
+    LogLevel: INFO
+
+importExport:
+  LogLevel: INFO # DEBUG, INFO, WARN, ERROR
+
+LeanFs:
+  LogLevel: INFO # DEBUG, INFO, WARN, ERROR
+
+InoEditor:
+  AutoSaveDelayMs: 10000  # Auto-save delay in milliseconds after editor changes
+  LogLevel: INFO # DEBUG, INFO, WARN, ERROR
+
+IDE:
+  ToastDurationMs: 3000
+
+LeanbotSerial:
+  LogLevel: INFO # DEBUG, INFO, WARN, ERROR
+  Serial:
+    LogLevel: INFO # DEBUG, INFO, WARN, ERROR
+  Uploader:
+    getSyncRepeatMs : 100
+    getSyncTimeoutMs: 1500 
+    LogLevel: INFO

@@ -1,0 +1,965 @@
+/* ========== BASE ========== */
+html, body{
+  margin:0;
+  height:100%;
+  font-family:"Roboto", system-ui, -apple-system, "Segoe UI", Arial;
+}
+
+body{
+  display:flex;
+  flex-direction:column;
+}
+
+.time,.rssi{
+  font-size:12px;
+  opacity:0.7;
+}
+
+#leanbotStatusAnchor {
+  cursor: default !important;
+}
+
+/* Status */
+#leanbotStatus{
+  font-weight:700;
+  color:#000; /*black text*/
+  font-size:12px;
+  display:none;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 3px;
+  border: 0;
+  background-color: transparent;
+}
+
+/* Error (pink)
+#leanbotStatus.error {
+  background-color: #FEF2F3;
+} */
+
+/* Warning (yellow) */
+#leanbotStatus.warning {
+  background-color: #FFE699;
+}
+
+/* Info (blue)
+#leanbotStatus.info {
+  background-color: #ECFEFF;
+} */
+
+/* Success (green) */
+#leanbotStatus.success {
+  background-color: #C6E0B4;
+}
+
+/* ========== TOP BAR ========== */
+.lb-topbar{
+  height:36px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 8px;
+  border-bottom:1px solid #e5e5e5;
+  background:#f8f9f9;
+}
+
+.lb-top-left,
+.lb-top-right{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.lb-tabs{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+/* buttons */
+.lb-tab,
+.lb-icon-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  padding:5px 8px;
+  border:0;
+  background:transparent;
+  border-radius:3px;
+  cursor:pointer;
+  line-height:1;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.5px;
+  outline:none;
+}
+
+.lb-tab.active{ background:#e0e0e0; }
+
+.lb-tab.disabled,
+.lb-icon-btn.disabled{
+  pointer-events:none;
+  opacity:0.5;
+}
+
+.lb-tab.disabled.hidden {
+  visibility: hidden;
+}
+
+.lb-tab:hover,
+.lb-icon-btn:hover{ background:#e0e0e0; }
+
+.lb-tab:active,
+.lb-icon-btn:active{ background:#d5d5d5; }
+
+.lb-icon-btn.error,
+.lb-icon-btn.error:hover,
+.lb-icon-btn.error:active{
+  background:#FFC7CE !important;
+}
+
+/* icons */
+.lb-tab-icon,
+.lb-icon-img{
+  width:14px;
+  height:14px;
+  object-fit:contain;
+  display:block;
+}
+
+#ptutorIcon{
+  width:20px;
+  height:20px;
+  object-fit:contain;
+  display:block;
+}
+
+#logoIcon{ height:16px; width:auto; display:block; }
+#codeIcon{ width:12px; height:12px; }
+#btnCode{ background:#e0e0e0; }
+
+/* ========== BOTTOM BAR ========== */
+.lb-bottombar{
+  height:32px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 10px;
+  border-top:1px solid #e5e5e5;
+  background:#fff;
+  font-size:11px;
+  color:#000;
+}
+
+.lb-bottom-left{
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+
+.lb-bottom-right{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.lb-meta{
+  font-size:11px;
+  color:#000;
+  white-space:nowrap;
+}
+
+/* server pill */
+.lb-pill{
+  padding:2px 8px;
+  border-radius:10px;
+  font-size:10px;
+  font-weight:700;
+}
+.lb-pill.online{ background:#1fa400; color:#fff; }
+.lb-pill.offline{ background:#d80000; color:#fff; }
+
+#btnReconnect{
+  display:none;
+  color:#000;
+  background-color: #FFE699; /*warning*/
+}
+
+/* ========== WORKSPACE ========== */
+#workspace{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  box-sizing:border-box;
+  min-height:0;
+}
+
+/* normal */
+#editorRow{
+  display:grid;
+  grid-template-columns: 250px 1fr;
+  flex:1 1 0;
+  min-height:0;
+  transition: grid-template-columns 0.18s ease;
+}
+
+/* collapsed */
+#editorRow.tree-collapsed{
+  grid-template-columns: 32px 1fr;
+}
+
+/* hide tree content */
+#editorRow.tree-collapsed #fileTreePanel{
+  display:none;
+}
+
+/* toolbar layout */
+#editorRow.tree-collapsed #fileTreeToolbar{
+  justify-content:center;
+  padding:6px 4px;
+}
+
+/* hide all buttons except Show Tree */
+#editorRow.tree-collapsed 
+#fileTreeToolbar 
+.ft-toolbar-row > *:not(#btnShowTree){
+  display:none;
+}
+
+#fileTreeColumn{
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+  border-right:1px solid #333;
+  background:#fafafa;
+}
+
+#fileTreeToolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 6px;
+}
+
+.ft-toolbar-row {
+  display: grid;
+  grid-template-columns: 26px repeat(3, 1fr);
+  gap: 6px;
+}
+
+#fileTreeToolbar .lb-icon-btn{
+  width: 100%;        
+  height: 26px;
+  padding: 0 8px;
+  font-size: 12px;
+  letter-spacing: 0;
+  white-space: nowrap;
+  border-radius: 4px;
+
+  display: flex;        
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* make icon-only button square and centered */
+#btnShowTree{
+  width: 26px;
+  padding: 0;
+  justify-content: center;
+}
+
+.ft-spacer{
+  width: 26px;
+}
+
+/* slightly smaller icons inside tree toolbar */
+#fileTreeToolbar .lb-icon-img{
+  width: 13px;
+  height: 13px;
+}
+
+/* tighten text buttons */
+#btnNewFile,
+#btnNewFolder,
+#btnLoadFile{
+  letter-spacing:0;
+  white-space:nowrap;
+}
+
+#fileTreePanel{
+  flex:1 1 auto;
+  min-height:0;
+  overflow-y:auto;
+}
+
+.file-tree-item[disabled]{
+  color: #000;
+}
+
+/* ========== Modal ========== */
+
+/* container */
+.modal{
+  position: absolute;
+  top: 5px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 999;
+}
+
+.modal-window{
+  width: 420px;
+  background: #ffffff;
+  border-radius: 6px;
+  padding: 18px 20px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.25);
+  font-family: system-ui, sans-serif;
+}
+
+/* title */
+.modal-title{
+  font-size: 16px;
+  font-weight: 600;
+  color: #0e0d0d;
+  margin-bottom: 12px;
+}
+
+/* message */
+.modal-message{
+  font-size: 14px;
+  color: #222;
+  line-height: 1.5;
+  white-space: pre-line;
+  margin-bottom: 20px;
+}
+
+/* actions */
+.modal-actions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* buttons */
+.modal-btn{
+  padding: 8px 20px;
+  border-radius: 22px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+/* primary action (blue) */
+.modal-btn-primary{
+  background: #0b5ed7;
+  color: white;
+  border: 2px solid #0b5ed7;
+
+  box-shadow:
+    inset 0 0 0 2px white;
+}
+
+.modal-btn-primary:hover{
+  background: #0a53be;
+}
+
+/* secondary / normal */
+.modal-btn-secondary{
+  background: transparent;
+  border: 1px solid #9ec5fe;
+  color: #0b5ed7;
+}
+
+/* utility */
+.is-hidden{
+  display: none !important;
+}
+
+/* ========== TREE CONTEXT MENU ========== */
+.ctx-menu{
+  position:fixed;
+  z-index:9999;
+  background:#fff;
+  border:1px solid #cfcfcf;
+  border-radius:6px;
+  padding:6px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.18);
+  min-width:140px;
+}
+
+.ctx-menu.is-hidden{ display:none; }
+
+.ctx-menu button{
+  width:100%;
+  text-align:left;
+  border:0;
+  background:transparent;
+  padding:8px 10px;
+  border-radius:4px;
+  cursor:pointer;
+  font-size:13px;
+}
+
+/* File tree selected / focused */
+.file-tree-item {
+  width: 100%;
+  cursor: default !important;
+}
+
+.file-tree-item.is-selected {
+  font-weight: bold;
+}
+
+.file-tree-item.is-focused {
+  outline: 1px solid #050505;
+}
+
+#fileTreePanel.is-drop-hover{
+  outline: 2px solid #93c5fd;
+  outline-offset: -2px;
+  background: #f0f9ff;
+}
+
+.ctx-menu button:hover{ background:#f2f2f2; }
+
+#editorSection{
+  flex:1 1 0;
+  min-height:0;
+  min-width: 0;
+}
+
+#codeEditor{
+  width:100%;
+  height:100%;
+  box-sizing:border-box;
+  font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+#blocklyEditor{
+  width:100%;
+  height:100%;
+  overflow: hidden;  /* Hide overflow content, prevent scrollbars */
+}
+
+#blocklyInlineFrame {
+  width: 100%;
+  height: 100%;
+}
+
+/* serial open ratio (editor : serial = 1 : 1) */
+#serialSection.is-hidden{ display:none; }
+
+#workspace.serial-open #editorRow{
+  flex:1 1 0;
+  min-height:0;
+}
+#workspace.serial-open #serialSection{
+  display:flex;
+  flex:1 1 0;
+  min-height:0;
+}
+
+/* ========== SERIAL SECTION ========== */
+#serialSection{
+  border:1px solid #ccc;
+  background:#fff;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
+
+/* Tabs bar */
+#serialTabsBar{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  border-bottom:1px solid #ccc;
+  background:#f8f9f9;
+}
+
+#serialTabs{
+  display:flex;
+  gap:6px;
+  padding:6px 8px;
+}
+
+#serialTabs .serial-tab{
+  border:0;
+  background:transparent;
+  padding:6px 8px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.8px;
+  color:#666;
+  cursor:pointer;
+}
+
+/* đẩy cụm phải sang phải */
+#serialTabsRight{
+  margin-left:auto;
+  display:flex;
+  align-items:center;
+  gap:6px; /* khoảng cách Auto hide ↔ Close */
+  padding-right:4px;
+}
+
+#serialTabs .serial-tab.active{
+  color:#1d1d1d;
+  background:#efefef;
+}
+
+#btnCloseSerial{
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  padding:4px 8px;
+}
+#btnCloseSerial:hover{
+  background:#eee;
+  border-radius:4px;
+}
+
+/* Panels */
+#serialPanels{
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  min-height:0;
+}
+
+.serial-panel{
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  min-height:0;
+}
+
+.serial-panel.is-hidden{ display:none; }
+
+/* Monitor log */
+#serialLog{
+  flex:1;
+  min-height:0;
+  width:100%;
+  background:#000;
+  color:#fff;
+  font:13px monospace;
+  overflow-y:auto;
+  white-space:pre-wrap;
+  border:1px solid #999;
+  box-sizing:border-box;
+  resize:none;
+  caret-color:transparent;
+}
+
+/* Monitor bottom bar */
+#serialBottom{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:6px 8px;
+  border-top:1px solid #ddd;
+  background:#fafafa;
+  flex-wrap:nowrap;
+}
+
+.serial-group{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  white-space:nowrap;
+}
+
+.serial-send{
+  flex:1;
+  min-width:260px;
+}
+
+#serialInput{
+  flex:1;
+  min-width:180px;
+  font-family:monospace;
+  padding:6px 8px;
+  border:1px solid #cfcfcf;
+  border-radius:6px;
+  box-sizing:border-box;
+}
+
+#serialBottom button{
+  background:#fff;
+  border:1px solid #cfcfcf;
+  border-radius:6px;
+  padding:6px 10px;
+  font-size:13px;
+  cursor:pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+#serialBottom button:hover{ background:#f2f2f2; }
+
+.serial-actions{
+  margin-left:auto;
+  gap:6px;
+}
+
+.btn-small{
+  padding:6px 8px;
+  min-width:56px;
+}
+
+.text-checkbox{
+  font-size:13px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.text-checkbox input{ transform: translateY(0.5px); }
+
+/* ========== PROGRAM (COMPILE | UPLOAD) ========== */
+#programPanel{min-height:0}
+
+#programGrid{
+  flex:1;
+  min-height:0;
+  height:100%;
+  display:grid;
+  grid-template-rows:1fr 2fr;
+  gap:5px;
+}
+
+#programGrid.hide-upload {
+  grid-template-rows: 1fr;
+
+}
+
+#programGrid.hide-upload #programUpload {
+  display: none;
+}
+
+#programGrid.hide-upload #progCompile {
+  height: 20%;
+}
+
+.group-box{
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  padding:3px;
+  background:#fff;
+  overflow:hidden;
+}
+
+/* 2 cột: trái progress, phải log */
+.group-body{
+  flex:1;
+  min-height:0;
+  display:grid;
+  /* grid-template-columns:1fr 2fr; */
+  grid-template-columns:250px 1fr;
+  gap:5px;
+}
+
+/* cột progress */
+.col-progress{
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  border:1px solid #ccc;
+}
+
+.group-header{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  padding:4px;
+  font-weight:bold;
+  flex:0 0 auto;
+}
+.group-header .rssi{flex:1}
+.group-header .title{text-align:center;white-space:nowrap}
+.group-header .time{flex:1;text-align:right}
+
+/* list progress tự chia đều chiều cao */
+.progress-list{
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
+  gap:5px;
+}
+
+.progress-wrapper{
+  flex:1;
+  min-height:0;
+  display:flex;
+  padding:3px;
+  position:relative;
+  box-sizing:border-box;
+}
+
+progress{
+  width:100%;
+  height:100%;
+  display:block;
+  appearance:none;
+  -webkit-appearance:none;
+  box-sizing:border-box;
+}
+
+/* cột log */
+.msg-box{
+  min-height:0;
+  display:flex;
+}
+.msg-box > textarea{
+  width:100%;
+  height:100%;
+  min-height:0;
+  resize:none;
+  box-sizing:border-box;
+  font-family:monospace;
+  overflow:auto;
+  border:1px solid #bbb;
+  caret-color:transparent;
+}
+
+/* Upload log: không wrap */
+#uploadLog{
+  white-space:pre;
+  overflow-x:auto;
+}
+
+/* label nằm trên progress */
+.progress-label{
+  position:absolute;
+  left:3px;
+  right:3px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:12px;
+  line-height:1;
+  text-align:center;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  pointer-events:none;
+  color:#000;
+}
+
+/* màu progress */
+progress::-webkit-progress-bar {
+  background: #D9D9D9;
+}
+progress.yellow::-webkit-progress-value{background:#c5a000}
+progress.yellow::-moz-progress-bar{background:#c5a000}
+progress.green::-webkit-progress-value{background:#1b5e20}
+progress.green::-moz-progress-bar{background:#1b5e20}
+progress.red::-webkit-progress-value{background:#b71c1c}
+progress.red::-moz-progress-bar{background:#b71c1c}
+
+/* ========== MODAL (FILE SELECTION) ========== */
+#fileModal.hidden{ display:none; }
+
+#fileModal{
+  position:fixed;
+  inset:0;
+  background: rgba(0,0,0,0.6);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:999;
+}
+
+.modal-content{
+  background:#fff;
+  padding:20px;
+  border-radius:6px;
+  text-align:center;
+  box-shadow:0 4px 12px rgba(0,0,0,0.25);
+}
+
+.modal-content h3{ margin-bottom:10px; }
+
+.fileOption{
+  display:block;
+  width:180px;
+  margin:8px auto;
+  padding:8px 10px;
+  border-radius:4px;
+  border:1px solid #444;
+  cursor:pointer;
+}
+
+.fileOption:hover{ background:#eaeaea; }
+
+#closeModal{ margin-top:12px; }
+
+/* ========== RESPONSIVE (ngang điện thoại) ========== */
+@media (max-width: 760px) and (orientation: landscape){
+  #programGrid{ gap:4px; }
+
+  .group-box{ padding:4px; }
+
+  .group-header{
+    padding:2px 4px;
+    gap:4px;
+  }
+
+  .progress-wrapper{ padding:2px 4px; }
+
+  .progress-wrapper progress{ height:16px; }
+
+  .progress-label{
+    font-size:11px;
+    left:4px;
+    right:4px;
+  }
+
+  .msg-box{ padding:2px 4px 4px 4px; }
+
+  .msg-box textarea{ padding:4px; }
+}
+
+/* ========== MODAL (BLE chooser + select popup) ========== */
+
+#ideModal{
+  border:none;
+  padding:0;
+  background:transparent;
+
+  width:100vw;
+  height:100vh;
+
+  max-width:none;
+  max-height:none;
+  pointer-events: auto;
+}
+
+#ideModal::backdrop{
+  background: rgba(128,128,128,0.5);
+  pointer-events: auto;
+}
+
+/* ===== TIPPY STYLE ===== */
+
+.tippy-box[data-theme^='custom-'] {
+  background-color: var(--tippy-bg);
+  color: var(--tippy-text);
+  text-align: center;
+  font-family: 'Roboto', sans-serif;
+  font-size: 14px;
+}
+
+/* Arrow (classic triangle) */
+.tippy-box[data-theme^='custom-'] > .tippy-arrow::before {
+  color: var(--tippy-bg);
+}
+
+/* SVG arrow (if enabled) */
+.tippy-box[data-theme^='custom-'] > .tippy-svg-arrow {
+  fill: var(--tippy-bg);
+}
+
+/* Fine positioning tweaks */
+.tippy-box[data-theme^='custom-'][data-placement^='top'] > .tippy-arrow {
+  bottom: -1px;
+}
+
+.tippy-box[data-theme^='custom-'][data-placement^='bottom'] > .tippy-arrow {
+  top: -1px;
+}
+
+.tippy-box[data-theme^='custom-'][data-placement^='left'] > .tippy-arrow {
+  right: -1px;
+}
+
+.tippy-box[data-theme^='custom-'][data-placement^='right'] > .tippy-arrow {
+  left: -1px;
+}
+
+/* ================================================================ */
+
+/* Định nghĩa màu nền cho tippy tooltip */
+
+/* Gray */
+.tippy-box[data-theme~='custom-gray'] {
+  --tippy-bg: rgba(45, 45, 45, 0.9);
+  --tippy-text: white;
+}
+
+.tippy-box[data-theme~='custom-error'] {
+  --tippy-bg: rgba(183, 28, 28, 0.9);
+  --tippy-text: white;
+}
+
+.tippy-box[data-theme~='custom-success'] {
+  /* --tippy-bg: rgba(39, 174, 96, 1); */
+  --tippy-bg: rgba(27, 94, 32, 0.9);
+  --tippy-text: white;
+}
+
+.tippy-box[data-theme~='custom-warning'] {
+  --tippy-bg: rgba(130, 100, 0, 0.9);
+  --tippy-text: white;
+}
+
+/* ===== TOOLTIP CHECKLIST ===== */
+
+/* Container chứa các dòng status */
+.tippy-status-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+/* ===== TITLE ===== */
+.tippy-status-container-title {
+  font-weight: bold;
+  color: white;
+  margin-bottom: 10px;
+  font-size: 16px;
+  text-align: center;
+  display: block;
+  align-self: center;
+}
+
+/* ===== ITEM ===== */
+.tippy-upload-compile-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: white; /* default */
+}
+
+/* ===== DOT (default)===== */
+.tippy-upload-compile-item::before {
+  content: "●";
+  font-size: 12px;
+  color: white;
+  margin-right: 6px;
+}
+
+/* ===== STATES ===== */
+.tippy-upload-compile-item.indicator {
+  color: rgb(243, 191, 61);
+}
+
+.tippy-upload-compile-item.success::before {
+  content: "✔";
+  /* color: #23c466; */
+  /* color: #4CAF50; */
+  color: rgb(35, 255, 102)
+}
+
+/* .tippy-upload-compile-item.error {
+  color: rgb(255, 82, 82 )
+} */
+
+/* ===== HIDDEN ===== */
+.tippy-upload-compile-item.hidden {
+  display: none !important;
+}

@@ -1,0 +1,9 @@
+<xml xmlns="https://developers.google.com/blockly/xml">
+  <block type="Leanbot.whenStarted" id="j6T+-bX4ek*WN[:xS]o|" x="213" y="13">
+    <next>
+      <block type="LbMission.beginByTeacher_end" id="kB8SuvVJYB;LAxKzYaGS">
+        <field name="comboTouch">TB1A + TB1B</field>
+      </block>
+    </next>
+  </block>
+</xml>
